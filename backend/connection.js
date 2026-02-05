@@ -1,17 +1,19 @@
-const mongoose = require('mongoose');
+require("dotenv").config();
+const mongoose = require("mongoose");
 
-// const url='mongodb://localhost:27017/Internship'
-// const url='mongodb+srv://vanshikapal44:vanshikapal44 @cluster0.jbemkc8.mongodb.net/internship?appName=Cluster0'
-const url=" mongodb+srv://vanshikapal44:Vanshika12@cluster0.jbemkc8.mongodb.net/internship?appName=Cluster0"
+// Prefer using an environment variable. Fallback to the URL below (trimmed).
+const DEFAULT_URL =
+  "mongodb+srv://vanshikapal44:Vanshika12@cluster0.jbemkc8.mongodb.net/internship?appName=Cluster0";
+const url = (process.env.MONGO_URI || DEFAULT_URL).trim();
 
-
-// asynchronous function - Promise object
-mongoose.connect(url)
-.then((result) => {
-    console.log('database connected');
-    
-}).catch((err) => {
-    console.log(err);
-});
+// Connect with sensible defaults
+mongoose
+  .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("database connected");
+  })
+  .catch((err) => {
+    console.error("database connection error:", err.message || err);
+  });
 
 module.exports = mongoose;
